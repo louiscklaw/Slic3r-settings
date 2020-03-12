@@ -1,0 +1,44 @@
+# https://docs.travis-ci.com/user/docker/
+# https://docs.travis-ci.com/user/environment-variables/
+# https://docs.travis-ci.com/user/job-lifecycle/
+
+# You can import up to 25 other configs in total.
+
+version: ~> 1.0
+
+os: linux
+dist: bionic
+
+language: node_js
+node_js:
+  - 12
+
+script:
+  - hostname
+
+after_success:
+  - cd .travis
+  - id
+  - sudo apt update
+  - sudo apt install -y python3 python3-pip python3-dev python3-wheel python3-setuptools
+  - pip3 install --user pipenv
+  - pipenv sync
+  - pipenv run python3 ./merge.py
+
+notifications:
+  slack:
+    secure: "kl9Dg6qvDFMsf2cGjYpfplQKbqHh/AkoZFPnHylrOH1yE6VJmfwWlA1bhBe3t5bDjbNk0XMDeKHcd6yErh0bVu3EJPuf/cHfaJQF4KtaX00rkbUS723xglsc90U67SGGV/LjqddLmmgmCWqfE0cwkzriQVxbYSLJAEchXY1k2bBUJqmEhyhhfgGXxqtDAVS1zge/FO6qEl6OcOL5bBTyG/EJKD0JAggJ61uXOKKDVnZ7RznnEX1UIOJE584J7sD44A+ALt9Bf/Qu1iprUgO3ci2lzHY0G0KUlftOzP972OAL4H3JcaTieIT1vxDBylPd+zDwFlbVH/5TqDLXTT6vF1FMlo0NJqCQmrCu5i5yX7bIlXRD72pCJnzyiMZm/CkRCCxXq9YuVqkyCJAD6UnhyuCwW6diX3JoKmbmJDCTSHuTkWeZ2Q1EdeDugSb0WpjDMELbVMh3ZMKFJw3pQbBNqAz0702C+eIFAKQ0+g+KgWzwufX9WHtx6x83j71sHx6GBAWyIO7zR4KAj/BxdkqaFREmF/b60Se6Xvgu0H6Jc5zbGmQDLXhOP2o1b0x3Wz+IpAUmtvAT4Pk4mcYfwboeXybUSdV3yC8OfWuE6QLq2ExHzjlr3Xy/ZZocwwmP7rRQ5cxaixnfEkN5eFAtz0yNAWtTMxJp8oQNu8SNRs90dIo="
+
+
+env:
+  global:
+    # SLACK_TOKEN
+    - secure: "IEi8UImpomSi/iGLSq/TofhFwEW2HHWVND6nDwSzj6QrCQelO/Q4SpTajr1FFnEnV/AVW82jxedE4P5MQWOZplfWNi+SJi+VkcQ9u/hcikEKwVs4rk2J+siEoDJ2wThq+/Yzk0gXr/Lbc8310im8zKO6ZUEdty5NhK6Vke5TNtxb+Z9///n99tneFqRwiv1A9jAznZmjvYWDN7b1nlHu+EyWJN0Py+dBBTQJFUxNChpWljVY6jKhQlSdgfLcK24J24gnwAkWT7/GyWh8jJdWaBZCIY+8CjshyK7xrgEoj3ld9dSTcVqCMcJBz+a+qaTTZaTmq6qoBr3ASxnbpHVQAN/LfdggN3Lubl+M4lDAtuKT6aeHruilEOGZmFu0ALPG3krDJZz5fWc++Uv6pjjOtVK2wtz216049jYqwz8ktYdG5vZRY7En0W1uh5eeHkP4Q7Q4axXyEjRR7tT3DivonYSzzLm9OuSDuL0XQxfqPeFgbgSiTfwOZcUR+PSKCujoWoFqdUvx6tUNgRRBpE9V150s3f0dhvUOQ5xYFToLpjYLJmeFXEQVMQbhZMa+qg40XfbN6C3AaeA+qyfiMVglAXRmq6TWdGML8k2phMSgJFbFzLSqJfEtMVjHrnn5WobE6Q+ImBqJlzNrh7/rOqggFdaFAOcE7GkE5IiRLNLhYbY="
+
+
+    # GITHUB_TOKEN
+    - secure: "IdGdVinQzitSGwKC4GA0kBrdkxbillXDcoRgWl1MMik7tbFi80A7qLGR9m4feKaqabGwYaELn3jZv/o7m7L3L/tGfSXxciWqtGKA5gb8BEEq/ANKOuk2cwzkzjIeuPwgXhF6AAVbGa4aO6/sZvJjokOeXzHhuSlj2OdLMw+K0jlEZMXejk9YB0dtiOsgXCDmI88NV1MA13wd2KZie7cHs1i9e+9QAEEZMppm9w60H0q7yje8oFKQ8KngYP/2s7xPYL6EjRiTw84LLDAuk7fbAolvf2KbZ5buU+lhoE+diBMGEpDCQrrjcfEIEDY3GzvMnP4OkJVL5iIOa8LRK92UKS7ZoriGISocxWfnpKnJAhsFUegoeDxshjpeJ9JPvq12PuwatILJXk1QykbgHR6scAztKIpPJTDx0JIy0YD3OVsTRJAsKdvo/urqe8OwZqCqX4+0fxC88gniBp3W9/XASjvMFQr4ySewKmnzHP2VioBXTJmwjF4r3z2pupgHl/0dIEo0ApjODe+MPCCYWQs2sqEEiPdcQoB3xCp7hzONiQHtlhX+bjagZykmZ/aHHlnoMec9D90VSVDOhhGKunfclqU7yU6JTOAlpihFFyFvu2ED0X/P5y/pOP56hJ+4x//yrPRN1i0ZZDR0SBZWOVWutuHjWYfwWVyGjNLXibP8ZIc="
+
+
+    # TRAVIS_COMMIT_TOKEN
+    - secure: "ncZw2agDMfEoegFibIAVMW92jeOJR/k9ioN3yjal+MBN4kNBn/Wdg7rnfn4OHC+KhLvyMsBbz/CWoCpPdgo+5qnCSEckrvx6Xzg0ofaOKv0x6ePtX2WmH6d249eHRNrgc7zJR6zL6PER2qzXhM+fhddLPepV1jGccjE29fchMFBa16BXSPv+BzYTI1j32332ttqTi732GmC67PDacmr1JJzjAhMNjZzh+/HpqET3mrRKw05zRP94Vr03NLjRJzh3JYCZTpIifXpRIHJPP/L0rr5JsNCVm+9MO9sgVbGWHwtQR8W9SN6Md7+EEKhsOiqXYMaRGRup9+1ImlDBH6nJ7RlD1IkGG3uPJRNVylm1tEFqnCdgNKYGItRBVrTj2Mi7gjQo1uta5eCEpPhQfJBu33RkGnpzyFE/U5a2QSKWP/niKqxhs9gMFcRrjevzYCoDCjTNukmCtLrOrnHNmvLAEMP8vNB5JD938dBaXBuhtI+pKgjuRNP/Fu5Dddk6G+hZWVbmVx0JD2MYOGyKfywRxd+ruTH4/VaXemnZmO1dJAjoLccqcQKb14JG/KQ6AipHYye8jdF9ProDJHHAekJzuk42Bf7b5ul5mKQdyiajfN63a2Snk2IbKQBvBg6GUm/1g4F6MYEll9JVzuAO/K77pzbQgOyau2dPpI2q/4DRzRk="
